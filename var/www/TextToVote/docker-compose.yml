@@ -1,0 +1,30 @@
+version: '3.7'
+networks:
+    db_network:
+        name: db_network
+services:
+    web: 
+        image: docker.test:latest
+        volumes:
+            - ".:/app"
+        environment:
+            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+        ports:
+            - "5000:80"
+        networks: 
+            db_network:
+                aliases: 
+                    - mysql
+     
+    db:
+        image: cust_mysql:1.0
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+        ports:
+            - "3306:3306"
+        networks: 
+            db_network:
+                aliases: 
+                    - mysql
+

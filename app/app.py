@@ -4,13 +4,11 @@ from submission import Submission, SubmissionEncoder
 import json
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_HOST'] = 'mysql'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'W0RdP@ss!!33>23'
 app.config['MYSQL_DB'] = 'text_to_vote'
-
 mysql = MySQL(app)
-
 
 @app.route('/')
 def hello():
@@ -45,6 +43,13 @@ def submissions_post(form):
     return 'success'
 
 
-if __name__ == '__main__':
-    app.run()
+@app.route("/submissions/<id>", methods=['DELETE'])
+def delete_submission():
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM submissions where id=%s", id)
+    return 'success'
+
+
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0')
 
