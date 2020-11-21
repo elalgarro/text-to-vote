@@ -2,7 +2,7 @@ from app import app
 from flask import  request
 from flask_mysqldb import MySQL
 from app.submission import  Submission, SubmissionEncoder
-from twilio import twiml
+from twilio.twiml.messaging_response import MessagingResponse, Message
 import json
 mysql = MySQL(app)
 
@@ -50,6 +50,6 @@ def delete_submission():
 def message():
     number = request.form["From"]
     body = request.form["Body"]
-    resp = twiml.Response()
+    resp = MessagingResponse()
     resp.message(body + "... in bed ;)")
     return str(resp)
