@@ -2,6 +2,7 @@ from app import app
 from flask import  request
 from flask_mysqldb import MySQL
 from app.submission import  Submission, SubmissionEncoder
+from twilio import twiml
 import json
 mysql = MySQL(app)
 
@@ -45,4 +46,10 @@ def delete_submission():
     cur.execute("DELETE FROM submissions where id=%s", id)
     return 'success'
 
-@app.route("/vote", methods=['GET'])
+@app.route("/message", methods=['POST'])
+def message()
+    number = request.form["From"]
+    body = request.form["Body"]
+    resp = twiml.Response()
+    resp.message(body + "... in bed ;)")
+    return str(resp)
