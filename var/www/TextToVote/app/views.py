@@ -45,3 +45,4 @@ def delete_submission():
     cur.execute("DELETE FROM submissions where id=%s", id)
     return 'success'
 
+@app.route("/vote", methods=['GET'])
