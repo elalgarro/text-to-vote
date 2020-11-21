@@ -47,7 +47,7 @@ def delete_submission():
     return 'success'
 
 @app.route("/message", methods=['POST'])
-def message()
+def message():
     number = request.form["From"]
     body = request.form["Body"]
     resp = twiml.Response()
