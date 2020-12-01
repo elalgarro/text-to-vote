@@ -11,7 +11,7 @@ RUN set -e; \
             postgresql-dev
 
 ENV STATIC_URL /static
-ENV STATIC_PATH /var/www/app/static
+ENV STATIC_PATH /app/app/static
 
 ARG app_path=/var/www/
 COPY ./requirements.txt /var/www/requirements.txt

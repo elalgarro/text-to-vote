@@ -1,0 +1,15 @@
+.sm {
+  width: 60px;
+}
+
+.md {
+  width: 80px;
+}
+
+.lg {
+  width: 250px;
+}
+
+tbody td {
+  text-align: left;
+}

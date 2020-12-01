@@ -6,7 +6,7 @@ class Submission:
         id, name, desc, abrev, votes = tuple
         self.id = id
         self.name = name
-        self.desc = desc
+        self.description = desc
         self.abrev = abrev
         self.votes = votes
 

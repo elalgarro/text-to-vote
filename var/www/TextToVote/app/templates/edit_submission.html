@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="content">
+    <h1>
+        Edit Submission
+    </h1>
+    <form action="/submissions/{{sub.id}}/update" method="POST">
+         <div class="form-input">
+            <label>abrev</label>
+            <input id="abrev" type="text" name="abrev" value="{{ sub.abrev}}">
+        </div>
+        <div class="form-input">
+            <label>name</label>
+            <textarea id="name" type="text" name="name"> {{ sub.name }}</textarea>
+        </div>
+        <div class="form-input">
+            <label>description</label>
+            <textarea id="description" type="text" name="description"> {{sub.description}}</textarea>
+        <div class="form-input">
+        <div>
+            <input id="submit-form" type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

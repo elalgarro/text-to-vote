@@ -1,0 +1,80 @@
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+table, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+table {
+    border-collapse: collapse
+}
+
+td, th {
+    padding: 5px;
+}
+
+.content {
+    display: inline-block;
+    background: #a1bdc6;
+    padding: 20px;
+    margin: 20px;
+}
+
+.form-input{
+        margin: 10px;
+        text-align: left;
+}
+.form-input label {
+    display: block;
+    font-size: 20px;
+
+}
+
+input {
+    width: 300px;
+    font-size: 20px;
+}
+
+textarea {
+    width: 300px;
+    height: 80px;
+    font-size: 20px;
+}
+
+#submit-form, .button-option {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.index_buttons {
+    margin: 20px 10px;
+}
+
+a {
+    font-size: 20px;
+}
+
+.edit{
+    color: black;
+}
+
+#delete{
+    width: 100px;
+    background-color: #eb3939;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}

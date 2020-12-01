@@ -1,7 +1,7 @@
 from app import app
-from flask import  request
+from flask import request, render_template, redirect
 from flask_mysqldb import MySQL
-from app.submission import  Submission, SubmissionEncoder
+from app.submission import Submission, SubmissionEncoder
 from app.message import Message, MessageEncoder
 from app.phone_number import PhoneNumber, PhoneNumberEncoder
 from twilio.twiml.messaging_response import MessagingResponse, Message
@@ -11,10 +11,10 @@ mysql = MySQL(app)
 
 @app.route('/')
 def hello():
-    return "Hi Nimo I love you :)"
+    return redirect("/submissions")
 
 
-@app.route("/submissions", methods=['GET', 'POST'])
+@app.route("/submissions", methods=['Get', 'POST'])
 def submissions():
     if request.method == "POST":
         return submissions_post(request.form)
@@ -24,11 +24,28 @@ def submissions():
 
 def submissions_index():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM submissions")
+    cur.execute("SELECT * FROM submissions ORDER BY votes DESC")
     resp = cur.fetchall()
     subs = map(lambda res: Submission(res), resp)
-    return json.dumps(list(subs), cls=SubmissionEncoder)
+    return render_template("submissions.html", submissions=subs)
 
+
+@app.route("/submissions/new", methods=["GET"])
+def new_submission():
+    return render_template("new_submission.html")
+
+
+@app.route("/submissions/<sub_id>/update", methods=['POST'])
+def update_submission(sub_id):
+    cur = mysql.connection.cursor()
+    details = request.form
+    name = details["name"]
+    desc = details["description"]
+    abrev = details["abrev"]
+    cur.execute("UPDATE submissions set name= %s, description= %s, abrev= %s where id = %s", (name, desc, abrev, sub_id))
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/submissions")
 
 def submissions_post(form):
     cur = mysql.connection.cursor()
@@ -39,15 +56,24 @@ def submissions_post(form):
     cur.execute("INSERT INTO submissions(name, description, abrev) VALUES(%s, %s, %s)", (name, desc, abrev))
     mysql.connection.commit()
     cur.close()
-    return 'success'
+    return redirect("/submissions")
 
 
-@app.route("/submissions/<id>", methods=['DELETE'])
-def delete_submission():
+@app.route("/submissions/<sub_id>", methods=['POST', 'DELETE'])
+def delete_submission(sub_id):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM submissions where id=%s", id)
-    return 'success'
+    cur.execute("DELETE FROM submissions where id=%s", [sub_id])
+    mysql.connection.commit()
+    cur.close()
+    return redirect("/submissions")
 
+
+@app.route("/submissions/<sub_id>", methods=["GET"])
+def edit_submission(sub_id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * from submissions where id = %s", [sub_id])
+    resp = cur.fetchone()
+    return render_template("edit_submission.html", sub=Submission(resp))
 
 @app.route("/message", methods=['POST'])
 def message():
@@ -86,6 +112,13 @@ def messages():
     resp = map(lambda res: Message(res), msgs)
     return json.dumps(list(resp), cls=MessageEncoder)
 
+
+@app.route("/numbers/clear")
+def clear_numbers():
+    cur = mysql.connection.cursor()
+    cur.execute("Delete from phone_numbers")
+    mysql.connection.commit()
+    return render_template("deleted_message.html")
 
 def get_or_create_number(body):
     cursor = mysql.connection.cursor()
